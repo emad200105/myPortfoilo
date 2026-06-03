@@ -989,6 +989,27 @@ ul { list-style: none; }
   /* Timeline */
   .timeline::before { left: 14px; }
   .timeline-marker { width: 30px; height: 30px; }
-  .timeline-item { gap: 20px; }
-  .footer-inner { flex-direction: column; text-align: center; }
+  .timeline-item { gap: 16px; }
+  .timeline-card { padding: 20px 18px; }
+  .course-tags span { font-size: 0.72rem; padding: 3px 8px; }
+
+  /* Contact — force single column */
+  .contact-links-grid { grid-template-columns: 1fr; }
+  .contact-cta-inner { padding: 24px 20px; gap: 16px; }
+  .cta-emoji { font-size: 1.8rem; }
+  .cta-actions { flex-direction: column; width: 100%; }
+  .cta-actions .btn { width: 100%; justify-content: center; }
+  .contact-item { padding: 14px 16px; gap: 12px; }
+  .contact-value { font-size: 0.8rem; }
+
+  /* Footer */
+  .footer-inner { flex-direction: column; text-align: center; gap: 12px; }
+  .footer-links { flex-wrap: wrap; justify-content: center; gap: 12px; }
+}
+
+@media (max-width: 400px) {
+  .hero-stats { gap: 10px; padding: 12px; }
+  .stat-divider { display: none; }
+  .hero-title { font-size: 1.85rem; }
+  .section-title { font-size: 1.7rem; }
 }
