@@ -158,5 +158,31 @@ if (emailLink) {
   });
 }
 
+/* ── Resume download fix (works on file:// and http://) ── */
+document.querySelectorAll('a[download]').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const href = link.getAttribute('href');
+    fetch(href)
+      .then(res => res.blob())
+      .then(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = href.split('/').pop();
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        }, 1000);
+      })
+      .catch(() => {
+        // Fallback: open in new tab
+        window.open(href, '_blank');
+      });
+  });
+});
+
 console.log('%c 👋 Hey there, recruiter! ', 'background:#2563eb;color:#fff;font-size:16px;padding:6px 12px;border-radius:4px;font-weight:bold;');
 console.log('%c Thanks for checking out my portfolio source code. Let\'s connect: emad200105@gmail.com', 'color:#475569;font-size:13px;');
