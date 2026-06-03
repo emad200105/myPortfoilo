@@ -942,25 +942,51 @@ ul { list-style: none; }
   .badge-fs { left: -10px; bottom: 20px; }
   .about-grid { grid-template-columns: 1fr; gap: 40px; }
   .about-card-stack { flex-direction: row; flex-wrap: wrap; }
-  .about-card { flex: 1; min-width: 160px; }
+  .about-card { flex: 1; min-width: 180px; }
   .contact-links-grid { grid-template-columns: repeat(2, 1fr); }
   .contact-cta-inner { flex-direction: column; text-align: center; }
   .cta-actions { width: 100%; justify-content: center; }
   .timeline-top { flex-direction: column; gap: 10px; }
   .timeline-right { text-align: left; align-items: flex-start; }
 }
+
 @media (max-width: 640px) {
-  .section { padding: 72px 0; }
+  .section { padding: 64px 0; }
+  .container { padding: 0 16px; }
+
+  /* Nav */
   .nav-links { display: none; }
   #resume-btn { display: none; }
   .hamburger { display: flex; }
   .mobile-menu { display: block; }
-  .hero-stats { flex-direction: column; gap: 16px; padding: 16px; }
-  .stat-divider { width: 60px; height: 1px; }
+
+  /* Hero */
+  .hero-image-wrap { width: 200px; height: 200px; }
+  .hero-photo { width: 200px; height: 200px; }
+  .hero-image-ring { inset: -12px; }
+  .ring-2 { inset: -22px; }
+  .badge-ml { right: -4px; top: 4px; font-size: 0.7rem; padding: 5px 10px; }
+  .badge-fs { left: -4px; bottom: 10px; font-size: 0.7rem; padding: 5px 10px; }
+  .hero-title { font-size: 2.1rem; letter-spacing: -1px; }
+  .hero-subtitle { font-size: 0.85rem; }
+  .hero-bio { font-size: 0.92rem; }
+  .hero-cta { flex-direction: column; align-items: center; }
+  .hero-cta .btn { width: 100%; justify-content: center; }
+  .hero-stats { flex-direction: row; gap: 16px; padding: 14px 16px; width: 100%; justify-content: center; }
+  .stat-num { font-size: 1.25rem; }
+
+  /* About */
+  .about-card-stack { flex-direction: column; }
+  .about-card { flex: unset; width: 100%; }
+  .about-links { gap: 8px; }
+  .about-link { font-size: 0.82rem; padding: 7px 12px; }
+
+  /* Skills / Projects / Achievements */
   .projects-grid { grid-template-columns: 1fr; }
   .achievements-grid { grid-template-columns: 1fr; }
   .skills-grid { grid-template-columns: 1fr; }
-  .contact-links-grid { grid-template-columns: 1fr; }
+
+  /* Timeline */
   .timeline::before { left: 14px; }
   .timeline-marker { width: 30px; height: 30px; }
   .timeline-item { gap: 20px; }
