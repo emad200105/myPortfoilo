@@ -822,9 +822,11 @@ ul, ol { list-style: none; }
 }
 .pub-card {
   display: grid;
-  grid-template-columns: 52px 1fr;
-  gap: 18px;
-  background: var(--surface-grad);
+  grid-template-columns: 48px 1fr;
+  gap: 20px;
+  background:
+    radial-gradient(420px circle at 0% 0%, var(--primary-soft), transparent 68%),
+    var(--surface-grad);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 28px 30px;
@@ -833,33 +835,86 @@ ul, ol { list-style: none; }
   overflow: hidden;
   transition: all var(--transition);
 }
+.pub-card-featured {
+  background:
+    radial-gradient(440px circle at 0% 0%, var(--amber-soft), transparent 68%),
+    var(--surface-grad);
+}
+/* 1px Corner-Fading Specular Bezel (replaces solid left stripe) */
 .pub-card::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; bottom: 0;
-  width: 4px;
-  background: var(--primary);
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--primary-border) 0%, transparent 42%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.9;
+  transition: opacity var(--transition);
 }
 .pub-card-featured::before {
-  background: var(--amber);
+  background: linear-gradient(135deg, var(--amber-border) 0%, transparent 42%);
+}
+.pub-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), var(--primary-soft), transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
 }
 .pub-card:hover {
   box-shadow: var(--shadow-lg);
   border-color: var(--border-strong);
   transform: translateY(-2px);
 }
+.pub-card:hover::after {
+  opacity: 0.85;
+}
+.pub-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
 .pub-sidebar-num {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  background: var(--well-bg);
+  box-shadow: var(--shadow-well);
   font-family: var(--font-mono);
-  font-size: 0.95rem;
+  font-size: 0.84rem;
   font-weight: 700;
   color: var(--primary);
-  padding-top: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+.pub-card-featured .pub-sidebar-num {
+  color: var(--amber);
+}
+.pub-sidebar-rule {
+  width: 1px;
+  flex: 1;
+  min-height: 36px;
+  background: linear-gradient(180deg, var(--border-strong) 0%, transparent 92%);
 }
 .pub-body {
   display: flex;
   flex-direction: column;
   gap: 14px;
   min-width: 0;
+  position: relative;
+  z-index: 1;
 }
 .pub-topbar {
   display: flex;
@@ -1174,13 +1229,23 @@ ul, ol { list-style: none; }
   overflow: hidden;
   transition: all var(--transition);
 }
+.proj-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), var(--primary-soft), transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
 .proj-card::after {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--primary);
+  top: 0; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary-border), transparent);
   opacity: 0;
+  pointer-events: none;
   transition: opacity var(--transition);
 }
 .proj-card:hover {
@@ -1188,6 +1253,7 @@ ul, ol { list-style: none; }
   box-shadow: var(--shadow-lg);
   border-color: var(--border-strong);
 }
+.proj-card:hover::before { opacity: 0.85; }
 .proj-card:hover::after { opacity: 1; }
 .proj-card.hidden-card { display: none; }
 
@@ -1527,9 +1593,12 @@ ul, ol { list-style: none; }
   gap: 28px;
   align-items: center;
   padding: 28px 30px;
-  border-color: var(--primary-border);
+  background:
+    radial-gradient(480px circle at 0% 0%, var(--primary-soft), transparent 65%),
+    var(--surface-grad);
+  border-color: var(--border-strong);
 }
-.proj-spotlight::after { opacity: 1; }
+.proj-spotlight::after { opacity: 0.9; }
 .proj-spotlight-copy {
   display: flex;
   flex-direction: column;
@@ -1789,21 +1858,44 @@ ul, ol { list-style: none; }
 }
 .tl-card-exp {
   flex: 1;
-  border-left: 4px solid var(--indigo);
+  background:
+    radial-gradient(380px circle at 0% 0%, var(--indigo-soft), transparent 66%),
+    var(--surface-grad);
 }
 .tl-card-edu {
-  border-left: 4px solid var(--emerald);
+  background:
+    radial-gradient(380px circle at 0% 0%, var(--emerald-soft), transparent 66%),
+    var(--surface-grad);
 }
 .tl-card-sub {
   padding: 18px 20px;
+  background: var(--surface-grad);
+}
+/* 1px Corner-Fading Specular Rim (replaces 4px left border) */
+.tl-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--border-strong) 0%, transparent 40%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.85;
+}
+.tl-card-exp::before {
+  background: linear-gradient(135deg, var(--indigo-border) 0%, transparent 42%);
+}
+.tl-card-edu::before {
+  background: linear-gradient(135deg, var(--emerald-border) 0%, transparent 42%);
 }
 .tl-card:hover {
   box-shadow: var(--shadow-lg);
   border-color: var(--border-strong);
   transform: translateY(-2px);
 }
-.tl-card-exp:hover { border-left-color: var(--indigo); }
-.tl-card-edu:hover { border-left-color: var(--emerald); }
 
 /* Cursor-Tracked Radial Sheen on Interactive Cards */
 .tl-card::after,
@@ -2554,7 +2646,10 @@ ul, ol { list-style: none; }
 
 /* ── CONTACT ── */
 .contact-card {
-  background: var(--surface-grad);
+  background:
+    radial-gradient(460px circle at 0% 0%, var(--primary-soft), transparent 62%),
+    radial-gradient(420px circle at 100% 100%, var(--emerald-soft), transparent 62%),
+    var(--surface-grad);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
   padding: 40px 44px;
@@ -2585,9 +2680,9 @@ ul, ol { list-style: none; }
 .contact-card::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: var(--primary);
+  top: 0; left: 12%; right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary-border), var(--emerald-border), transparent);
 }
 .contact-heading {
   font-family: var(--font-serif);
@@ -2756,7 +2851,16 @@ ul, ol { list-style: none; }
   .pub-card {
     grid-template-columns: 1fr;
     padding: 22px 18px;
-    gap: 10px;
+    gap: 12px;
+  }
+  .pub-sidebar {
+    flex-direction: row;
+  }
+  .pub-sidebar-rule {
+    width: auto;
+    height: 1px;
+    min-height: 0;
+    background: linear-gradient(90deg, var(--border-strong) 0%, transparent 92%);
   }
   .projects-bento,
   .honors-grid,

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=3" />
 </head>
 <body>
 
@@ -205,7 +205,10 @@
 
           <!-- Paper [1] -->
           <article class="pub-card pub-card-featured reveal">
-            <div class="pub-sidebar-num">[01]</div>
+            <div class="pub-sidebar">
+              <span class="pub-sidebar-num">01</span>
+              <span class="pub-sidebar-rule" aria-hidden="true"></span>
+            </div>
             <div class="pub-body">
               <div class="pub-topbar">
                 <div class="pub-badges">
@@ -242,16 +245,16 @@
                 </div>
                 <svg id="dewarp-svg" class="dewarp-svg" viewBox="0 0 420 92" aria-label="Interactive document dewarping visualization">
                   <!-- Reference PubLayNet Supervision Box -->
-                  <rect x="38" y="8" width="344" height="76" rx="5" fill="none" stroke="var(--amber)" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.55" />
+                  <rect x="38" y="8" width="344" height="76" rx="5" fill="none" stroke="var(--amber)" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.55"></rect>
                   <text x="46" y="20" font-family="var(--font-mono)" font-size="8.5" fill="var(--amber)" opacity="0.85">PubLayNet Region Box</text>
-                  <!-- Warped/Rectified Page Outline -->
-                  <path id="dewarp-page" fill="var(--surface)" fill-opacity="0.55" stroke="var(--border-strong)" stroke-width="1.3" />
+                  <!-- Warped/Rectified Page Outline (pre-populated fallback + live JS update) -->
+                  <path id="dewarp-page" d="M 56.7 15.0 C 155 12.4, 265 15.3, 363.3 13.3 L 368 78.4 C 265 79.3, 155 76.4, 52 79.0 Z" fill="var(--surface)" fill-opacity="0.65" stroke="var(--border-strong)" stroke-width="1.3"></path>
                   <!-- Curved -> Straight Document Text Lines -->
-                  <path class="dewarp-line" stroke="var(--primary)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-                  <path class="dewarp-line" stroke="var(--ink-2)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.72" />
-                  <path class="dewarp-line" stroke="var(--ink-2)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.62" />
-                  <path class="dewarp-line" stroke="var(--ink-2)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.55" />
-                  <path class="dewarp-line" stroke="var(--emerald)" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.9" />
+                  <path class="dewarp-line" d="M 74 29.8 C 165 26.7, 255 31.0, 268 28.5" stroke="var(--primary)" stroke-width="2.6" stroke-linecap="round" fill="none"></path>
+                  <path class="dewarp-line" d="M 74 40.7 C 165 37.9, 255 41.9, 344 39.5" stroke="var(--ink-2)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.78"></path>
+                  <path class="dewarp-line" d="M 74 50.7 C 165 48.0, 255 51.8, 338 49.5" stroke="var(--ink-2)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.68"></path>
+                  <path class="dewarp-line" d="M 74 60.6 C 165 58.2, 255 61.6, 346 59.6" stroke="var(--ink-2)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.58"></path>
+                  <path class="dewarp-line" d="M 74 70.6 C 165 68.4, 255 71.5, 296 69.6" stroke="var(--emerald)" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.92"></path>
                 </svg>
                 <div class="dewarp-controls">
                   <button type="button" class="dewarp-end-btn" data-dewarp-set="0">Warped (30.4% CER)</button>
@@ -308,7 +311,10 @@
 
           <!-- Paper [2] -->
           <article class="pub-card reveal">
-            <div class="pub-sidebar-num">[02]</div>
+            <div class="pub-sidebar">
+              <span class="pub-sidebar-num">02</span>
+              <span class="pub-sidebar-rule" aria-hidden="true"></span>
+            </div>
             <div class="pub-body">
               <div class="pub-topbar">
                 <div class="pub-badges">
@@ -1168,6 +1174,6 @@
     </div>
   </footer>
 
-  <script src="main.js"></script>
+  <script src="main.js?v=3"></script>
 </body>
 </html>

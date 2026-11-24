@@ -473,7 +473,7 @@ lcPills.forEach(pill => {
 });
 
 /* ── Cursor-Tracked Radial Surface Sheen Across Cards ── */
-document.querySelectorAll('.tl-card, .stack-card, .honor-card').forEach(card => {
+document.querySelectorAll('.pub-card, .proj-card, .tl-card, .stack-card, .honor-card').forEach(card => {
   card.addEventListener('pointermove', e => {
     const r = card.getBoundingClientRect();
     card.style.setProperty('--mx', `${(e.clientX - r.left).toFixed(0)}px`);
