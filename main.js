@@ -1,6 +1,6 @@
-/* ─── main.js — Editorial Scholar Portfolio ─── */
+/* ─── main.js — Elevated Editorial Research Portfolio ─── */
 
-/* ── Theme toggle (Warm Ivory default, optional Dark Reading mode) ── */
+/* ── Theme Switcher (Warm Alabaster default / Obsidian Lab Dark Mode) ── */
 const root = document.documentElement;
 const themeToggle = document.getElementById('theme-toggle');
 const savedTheme = localStorage.getItem('portfolio-theme');
@@ -10,17 +10,18 @@ if (savedTheme === 'dark') {
 
 if (themeToggle) {
   themeToggle.addEventListener('click', () => {
-    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    if (next === 'dark') {
-      root.setAttribute('data-theme', 'dark');
-    } else {
+    const isDark = root.getAttribute('data-theme') === 'dark';
+    if (isDark) {
       root.removeAttribute('data-theme');
+      localStorage.setItem('portfolio-theme', 'light');
+    } else {
+      root.setAttribute('data-theme', 'dark');
+      localStorage.setItem('portfolio-theme', 'dark');
     }
-    localStorage.setItem('portfolio-theme', next);
   });
 }
 
-/* ── Navbar scroll state & active section highlight ── */
+/* ── Sticky Nav Shadow & Active Section Pill ── */
 const navbar = document.getElementById('navbar');
 const sections = document.querySelectorAll('main section[id]');
 const navLinks = document.querySelectorAll('.nav-links a');
@@ -34,7 +35,7 @@ function onScroll() {
 
   let current = 'about';
   sections.forEach(sec => {
-    const top = sec.offsetTop - 110;
+    const top = sec.offsetTop - 120;
     if (window.scrollY >= top) {
       current = sec.getAttribute('id');
     }
@@ -47,7 +48,7 @@ function onScroll() {
 window.addEventListener('scroll', onScroll, { passive: true });
 onScroll();
 
-/* ── Mobile menu ── */
+/* ── Mobile Drawer ── */
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobile-menu');
 const mobileLinks = document.querySelectorAll('.mobile-link');
@@ -76,7 +77,50 @@ if (hamburger && mobileMenu) {
   });
 }
 
-/* ── Calm scroll-reveal ── */
+/* ── Interactive BibTeX Drawers & One-Click Copy ── */
+document.querySelectorAll('.bib-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const drawer = document.getElementById(btn.dataset.bib);
+    if (!drawer) return;
+    const willOpen = drawer.hasAttribute('hidden');
+    if (willOpen) {
+      drawer.removeAttribute('hidden');
+      btn.setAttribute('aria-expanded', 'true');
+    } else {
+      drawer.setAttribute('hidden', '');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+});
+
+document.querySelectorAll('.copy-bib-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const codeEl = document.getElementById(btn.dataset.target);
+    if (!codeEl) return;
+    navigator.clipboard.writeText(codeEl.textContent).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copied';
+      setTimeout(() => { btn.textContent = orig; }, 1800);
+    });
+  });
+});
+
+/* ── Interactive Project Domain Filter ── */
+const filterBtns = document.querySelectorAll('.filter-btn');
+const projectCards = document.querySelectorAll('#projects-grid .proj-card');
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const filter = btn.dataset.filter;
+    filterBtns.forEach(b => b.classList.toggle('active', b === btn));
+    projectCards.forEach(card => {
+      const match = filter === 'all' || card.dataset.category === filter;
+      card.classList.toggle('hidden-card', !match);
+    });
+  });
+});
+
+/* ── Scroll Reveal ── */
 const revealEls = document.querySelectorAll('.reveal');
 if ('IntersectionObserver' in window) {
   const observer = new IntersectionObserver(
@@ -95,18 +139,18 @@ if ('IntersectionObserver' in window) {
   revealEls.forEach(el => el.classList.add('visible'));
 }
 
-/* ── Copy email address on click ── */
-const emailRow = document.getElementById('contact-email');
-if (emailRow) {
-  emailRow.addEventListener('click', e => {
+/* ── Copy Email on Click ── */
+const emailItem = document.getElementById('contact-email');
+if (emailItem) {
+  emailItem.addEventListener('click', e => {
     e.preventDefault();
     navigator.clipboard.writeText('emad200105@gmail.com').then(() => {
-      const val = emailRow.querySelector('.contact-val');
-      const original = val.textContent;
-      val.textContent = '✓ Copied to clipboard';
-      val.style.color = 'var(--accent-sage)';
+      const val = emailItem.querySelector('.ci-value');
+      const orig = val.textContent;
+      val.textContent = '✓ Copied to clipboard!';
+      val.style.color = 'var(--emerald)';
       setTimeout(() => {
-        val.textContent = original;
+        val.textContent = orig;
         val.style.color = '';
       }, 2000);
     }).catch(() => {
@@ -115,7 +159,7 @@ if (emailRow) {
   });
 }
 
-/* ── Reliable CV PDF download (supports http:// and file://) ── */
+/* ── Reliable CV PDF Download ── */
 document.querySelectorAll('a[download]').forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
