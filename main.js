@@ -1,24 +1,45 @@
-/* ─── main.js — Portfolio interactions ─── */
+/* ─── main.js — Editorial Scholar Portfolio ─── */
 
-/* ── Navbar: scroll shadow + active link ── */
+/* ── Theme toggle (Warm Ivory default, optional Dark Reading mode) ── */
+const root = document.documentElement;
+const themeToggle = document.getElementById('theme-toggle');
+const savedTheme = localStorage.getItem('portfolio-theme');
+if (savedTheme === 'dark') {
+  root.setAttribute('data-theme', 'dark');
+}
+
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    if (next === 'dark') {
+      root.setAttribute('data-theme', 'dark');
+    } else {
+      root.removeAttribute('data-theme');
+    }
+    localStorage.setItem('portfolio-theme', next);
+  });
+}
+
+/* ── Navbar scroll state & active section highlight ── */
 const navbar = document.getElementById('navbar');
-const sections = document.querySelectorAll('section[id]');
+const sections = document.querySelectorAll('main section[id]');
 const navLinks = document.querySelectorAll('.nav-links a');
 
 function onScroll() {
-  // scrolled class
-  if (window.scrollY > 20) {
+  if (window.scrollY > 12) {
     navbar.classList.add('scrolled');
   } else {
     navbar.classList.remove('scrolled');
   }
 
-  // active nav link
-  let current = '';
+  let current = 'about';
   sections.forEach(sec => {
-    const top = sec.offsetTop - 90;
-    if (window.scrollY >= top) current = sec.getAttribute('id');
+    const top = sec.offsetTop - 110;
+    if (window.scrollY >= top) {
+      current = sec.getAttribute('id');
+    }
   });
+
   navLinks.forEach(link => {
     link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
   });
@@ -26,130 +47,66 @@ function onScroll() {
 window.addEventListener('scroll', onScroll, { passive: true });
 onScroll();
 
-/* ── Hamburger / Mobile menu ── */
+/* ── Mobile menu ── */
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobile-menu');
 const mobileLinks = document.querySelectorAll('.mobile-link');
 
-hamburger.addEventListener('click', () => {
-  const open = mobileMenu.classList.toggle('open');
-  hamburger.classList.toggle('open', open);
-});
-mobileLinks.forEach(link => {
-  link.addEventListener('click', () => {
-    mobileMenu.classList.remove('open');
-    hamburger.classList.remove('open');
+if (hamburger && mobileMenu) {
+  hamburger.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('open');
+    hamburger.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', String(open));
   });
-});
 
-/* ── Scroll-reveal (Intersection Observer) ── */
-const fadeTargets = document.querySelectorAll(
-  '.project-card, .pub-card, .skill-category, .achievement-card, .about-card, .timeline-card, .contact-item, .hero-stats'
-);
-fadeTargets.forEach(el => el.classList.add('fade-in'));
-
-const observer = new IntersectionObserver(
-  entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
     });
-  },
-  { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-);
-fadeTargets.forEach(el => observer.observe(el));
-
-/* ── Staggered children ── */
-document.querySelectorAll('.projects-grid, .pub-list, .skills-grid, .achievements-grid').forEach(grid => {
-  Array.from(grid.children).forEach((child, i) => {
-    child.style.transitionDelay = `${i * 60}ms`;
   });
-});
 
-/* ── Smooth-scroll for all internal anchors ── */
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', e => {
-    const target = document.querySelector(anchor.getAttribute('href'));
-    if (target) {
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth' });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
+      mobileMenu.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
     }
-  });
-});
-
-/* ── Hero photo subtle tilt on mousemove ── */
-const heroWrap = document.querySelector('.hero-image-wrap');
-if (heroWrap) {
-  document.addEventListener('mousemove', e => {
-    const { innerWidth, innerHeight } = window;
-    const x = (e.clientX / innerWidth - 0.5) * 12;
-    const y = (e.clientY / innerHeight - 0.5) * -12;
-    heroWrap.style.transform = `perspective(800px) rotateY(${x}deg) rotateX(${y}deg)`;
-  });
-  document.addEventListener('mouseleave', () => {
-    heroWrap.style.transform = '';
   });
 }
 
-/* ── Typing animation for hero subtitle ── */
-const subtitle = document.querySelector('.hero-subtitle');
-if (subtitle) {
-  const texts = [
-    'CS & Engineering Graduate · AI & ML Researcher · Full-Stack Developer',
-    'Deep Learning · Computer Vision · LLMs & RAG',
-    'Open to Software & AI/ML Engineering Opportunities'
-  ];
-  let idx = 0;
-  let charIdx = texts[0].length;
-  let deleting = false;
-  let pause = 0;
-
-  function type() {
-    const current = texts[idx];
-    if (pause > 0) { pause--; setTimeout(type, 50); return; }
-
-    if (!deleting) {
-      if (charIdx < current.length) {
-        subtitle.textContent = current.substring(0, ++charIdx);
-        setTimeout(type, 38);
-      } else {
-        pause = 40;
-        deleting = true;
-        setTimeout(type, 50);
-      }
-    } else {
-      if (charIdx > 0) {
-        subtitle.textContent = current.substring(0, --charIdx);
-        setTimeout(type, 22);
-      } else {
-        deleting = false;
-        idx = (idx + 1) % texts.length;
-        setTimeout(type, 400);
-      }
-    }
-  }
-
-  // Start after a short delay
-  setTimeout(() => {
-    subtitle.textContent = '';
-    type();
-  }, 800);
+/* ── Calm scroll-reveal ── */
+const revealEls = document.querySelectorAll('.reveal');
+if ('IntersectionObserver' in window) {
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.08, rootMargin: '0px 0px -30px 0px' }
+  );
+  revealEls.forEach(el => observer.observe(el));
+} else {
+  revealEls.forEach(el => el.classList.add('visible'));
 }
 
-/* ── Copy email on click ── */
-const emailLink = document.getElementById('contact-email');
-if (emailLink) {
-  emailLink.addEventListener('click', e => {
+/* ── Copy email address on click ── */
+const emailRow = document.getElementById('contact-email');
+if (emailRow) {
+  emailRow.addEventListener('click', e => {
     e.preventDefault();
     navigator.clipboard.writeText('emad200105@gmail.com').then(() => {
-      const val = emailLink.querySelector('.contact-value');
-      const orig = val.textContent;
-      val.textContent = '✓ Copied to clipboard!';
-      val.style.color = 'var(--success)';
+      const val = emailRow.querySelector('.contact-val');
+      const original = val.textContent;
+      val.textContent = '✓ Copied to clipboard';
+      val.style.color = 'var(--accent-sage)';
       setTimeout(() => {
-        val.textContent = orig;
+        val.textContent = original;
         val.style.color = '';
       }, 2000);
     }).catch(() => {
@@ -158,13 +115,16 @@ if (emailLink) {
   });
 }
 
-/* ── Resume download fix (works on file:// and http://) ── */
+/* ── Reliable CV PDF download (supports http:// and file://) ── */
 document.querySelectorAll('a[download]').forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
     const href = link.getAttribute('href');
     fetch(href)
-      .then(res => res.blob())
+      .then(res => {
+        if (!res.ok) throw new Error('Fetch failed');
+        return res.blob();
+      })
       .then(blob => {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -178,11 +138,7 @@ document.querySelectorAll('a[download]').forEach(link => {
         }, 1000);
       })
       .catch(() => {
-        // Fallback: open in new tab
         window.open(href, '_blank');
       });
   });
 });
-
-console.log('%c 👋 Hey there, recruiter! ', 'background:#2563eb;color:#fff;font-size:16px;padding:6px 12px;border-radius:4px;font-weight:bold;');
-console.log('%c Thanks for checking out my portfolio source code. Let\'s connect: emad200105@gmail.com', 'color:#475569;font-size:13px;');
