@@ -44,7 +44,7 @@ mobileLinks.forEach(link => {
 
 /* ── Scroll-reveal (Intersection Observer) ── */
 const fadeTargets = document.querySelectorAll(
-  '.project-card, .skill-category, .achievement-card, .about-card, .timeline-card, .contact-item, .hero-stats'
+  '.project-card, .pub-card, .skill-category, .achievement-card, .about-card, .timeline-card, .contact-item, .hero-stats'
 );
 fadeTargets.forEach(el => el.classList.add('fade-in'));
 
@@ -62,7 +62,7 @@ const observer = new IntersectionObserver(
 fadeTargets.forEach(el => observer.observe(el));
 
 /* ── Staggered children ── */
-document.querySelectorAll('.projects-grid, .skills-grid, .achievements-grid').forEach(grid => {
+document.querySelectorAll('.projects-grid, .pub-list, .skills-grid, .achievements-grid').forEach(grid => {
   Array.from(grid.children).forEach((child, i) => {
     child.style.transitionDelay = `${i * 60}ms`;
   });
@@ -97,9 +97,9 @@ if (heroWrap) {
 const subtitle = document.querySelector('.hero-subtitle');
 if (subtitle) {
   const texts = [
-    'CS & Engineering Graduate · ML Enthusiast · Full-Stack Developer',
-    'Deep Learning · Computer Vision · Web Applications',
-    'Open to Internship & Entry-Level Opportunities'
+    'CS & Engineering Graduate · AI & ML Researcher · Full-Stack Developer',
+    'Deep Learning · Computer Vision · LLMs & RAG',
+    'Open to Software & AI/ML Engineering Opportunities'
   ];
   let idx = 0;
   let charIdx = texts[0].length;
